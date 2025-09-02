@@ -13,7 +13,7 @@ router.get('/tabela', async(req,res)=>{
   }
 
 });
-
+;
 module.exports=router
 
 /*
