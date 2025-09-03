@@ -30,5 +30,6 @@ async function startServer() {
 startServer();
 
 module.exports = pool
+
 module.exports= sequelize
 

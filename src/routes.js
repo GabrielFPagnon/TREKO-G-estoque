@@ -29,6 +29,7 @@ app.get('/minha-view', async (req, res) => {
 
 
 module.exports=router
+
 module.exports = sequelize
 
 /*
