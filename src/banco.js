@@ -15,15 +15,20 @@ const sequelize = new Sequelize('gestao_de_estoque', 'postgres', '7031', {
     dialect: 'postgres'
 });
 
-async function testC(){
-try {
-  await sequelize.authenticate();
-  console.log('Connection show de bola.');
-} catch (error) {
-  console.error('Não conecto nesse diabo de database:', error);
-}
-}
-testC();
 
-module.exports = pool;
+
+async function startServer() {
+  try {
+    await sequelize.authenticate();
+    console.log('Conexão com o banco de dados estabelecida com sucesso.');
+    
+  } catch (error) {
+    console.error('Não foi possível conectar ao banco de dados:', error);
+  }
+}
+
+startServer();
+
+module.exports = pool
+module.exports= sequelize
 

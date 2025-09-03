@@ -1,8 +1,9 @@
 const express = require('express');
 /*const Produto = require('./Produto');*/ 
-
+const app = express();
 const router = express.Router();
 const verTabela= require('./consults');
+const sequelize = require('./banco');
 
 router.get('/tabela', async(req,res)=>{
   try{
@@ -13,8 +14,22 @@ router.get('/tabela', async(req,res)=>{
   }
 
 });
-;
+
+app.get('/minha-view', async (req, res) => {
+  try {
+    
+    const [results, metadata] = await sequelize.query('SELECT * FROM vw_movimentacao_estoque');
+    
+    res.json(results);
+  } catch (error) {
+    console.error('Erro ao buscar dados da view:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+});
+
+
 module.exports=router
+module.exports = sequelize
 
 /*
 router.post('/produtos', async (req, res) => {
