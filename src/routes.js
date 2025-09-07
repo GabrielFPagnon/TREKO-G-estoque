@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Produto = require('./models/Produto');
+const Produto = require('../models/Produto');
 
-// CREATE (Inserção) - POST /produtos
 router.post('/produtos', async (req, res) => {
   try {
     const { nome, descricao, preco } = req.body;
@@ -14,7 +13,6 @@ router.post('/produtos', async (req, res) => {
   }
 });
 
-// READ (Seleção) - GET /produtos
 router.get('/produtos', async (req, res) => {
   try {
     const produtos = await Produto.findAll();
@@ -25,7 +23,6 @@ router.get('/produtos', async (req, res) => {
   }
 });
 
-// READ (Seleção por ID) - GET /produtos/:id
 router.get('/produtos/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -42,7 +39,6 @@ router.get('/produtos/:id', async (req, res) => {
   }
 });
 
-// UPDATE (Atualização) - PUT /produtos/:id
 router.put('/produtos/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -61,7 +57,6 @@ router.put('/produtos/:id', async (req, res) => {
   }
 });
 
-// DELETE (Exclusão) - DELETE /produtos/:id
 router.delete('/produtos/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -80,4 +75,3 @@ router.delete('/produtos/:id', async (req, res) => {
 });
 
 module.exports = router;
-

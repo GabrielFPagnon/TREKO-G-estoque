@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../banco');
+const sequelize = require('../src/banco');
 
 const Produto = sequelize.define('Produto', {
   id: {
@@ -9,15 +9,15 @@ const Produto = sequelize.define('Produto', {
   },
   nome: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true, 
   },
   descricao: {
     type: DataTypes.STRING,
     allowNull: true,
   },
   preco: {
-    type: DataTypes.DECIMAL(10, 2),
-    allowNull: false,
+    type: DataTypes.FLOAT,
+    allowNull: true,
   },
 }, {
   tableName: 'produtos',
