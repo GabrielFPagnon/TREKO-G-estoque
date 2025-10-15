@@ -5,7 +5,6 @@ const loginRoutes = require('./loginRoutes');
 const sequelize = require('./banco');
 const router = require('./routes');
 const Produto = require('../models/Produto');
-
 const port = 8080;
 
 app.use(express.json());
