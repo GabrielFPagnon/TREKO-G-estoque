@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const cors = require('cors'); 
+const loginRoutes = require('./loginRoutes'); 
 const sequelize = require('./banco');
 const router = require('./routes');
 const Produto = require('../models/Produto');
@@ -22,6 +24,20 @@ async function startServer() {
   } catch (error) {
     console.error('Não foi possível conectar ou sincronizar com o banco de dados:', error);
   }
+  
+  app.use(cors({ 
+    origin: 'http://localhost:5173' 
+}));
+
+app.use(express.json());
+
+
+app.use('/api', loginRoutes); 
+
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor Back-end rodando na porta ${PORT}`);
+});
 }
 
 startServer();
