@@ -1,6 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Produto = require('../models/Produto');
+const produtosRoutes = require('./routes/produtosRoutes');
+
+// 2. Aplicar o roteador com o prefixo /api
+app.use('/api', produtosRoutes); 
+
 
 router.post('/produtos', async (req, res) => {
   try {
