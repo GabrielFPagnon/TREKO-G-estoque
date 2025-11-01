@@ -1,50 +1,61 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const loginRoutes = require('./loginRoutes');
 const sequelize = require('./banco');
-const router = require('./routes');
-const Produto = require('../models/Produto');
+const loginRoutes = require('./loginRoutes');
+const produtoRoutes = require('./routes');
+const Produto = require('../models/Produto.js');
+const Funcionario = require('../models/Funcionario.js'); // Importar para garantir a sincronização
 
-// Porta configurável (process.env.PORT) ou fallback para 8080
+// --- CONFIGURAÇÃO ---
 const port = process.env.PORT || 8080;
 
-// Middlewares
-app.use(express.json());
+// --- MIDDLEWARES ---
+app.use(express.json()); // Essencial para ler req.body
 
-// CORS: por padrão permite o Vite dev server em 5173. Para produção, configure a variável
-// de ambiente CORS_ORIGINS (comma-separated) ou ajuste conforme necessário.
+// --- CONFIGURAÇÃO DE CORS (A MAIS IMPORTANTE) ---
+// Vamos permitir explicitamente as portas que o Vite usa.
 const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173').split(',');
+
 app.use(cors({
   origin: function (origin, callback) {
-    // permitir requests sem origin (ex: curl, mobile apps)
+    // Permitir chamadas sem 'origin' (ex: Postman, apps mobile)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.indexOf('*') !== -1) {
-      return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `A política de CORS para este site não permite acesso da Origem: ${origin}`;
+      return callback(new Error(msg), false);
     }
-    return callback(new Error('Origin not allowed by CORS'));
+    return callback(null, true);
   },
   credentials: true
 }));
 
-// Rotas
-// Expor as rotas padrão sob o prefixo /api para compatibilidade com frontend
-app.use('/api', router);
+// Habilitar 'pre-flight' (requisições OPTIONS) para todas as rotas
+
+// --- ROTAS ---
+// Prefixo /api para todas as rotas
+app.use('/api', produtoRoutes);
 app.use('/api', loginRoutes);
 
+// --- INICIALIZAÇÃO DO SERVIDOR ---
 async function startServer() {
   try {
+    console.log('Autenticando com o banco de dados...');
     await sequelize.authenticate();
     console.log('Conexão com o banco de dados estabelecida com sucesso.');
-    await Produto.sync({ alter: true });
-    console.log('Tabela de produtos sincronizada.');
+
+    // Sincronizar todos os modelos de uma vez
+    console.log('Sincronizando tabelas (Funcionario e Produto)...');
+    await sequelize.sync({ alter: true }); // 'alter: true' é útil em dev, mas use com cuidado em prod.
+    console.log('Todas as tabelas foram sincronizadas.');
 
     app.listen(port, () => {
-      console.log(`Servidor rodando na porta ${port}`);
+      console.log(`Servidor rodando com sucesso na porta ${port}`);
     });
   } catch (error) {
-    console.error('Não foi possível conectar ou sincronizar com o banco de dados:', error);
-    process.exit(1);
+    console.error('Incapaz de conectar ou sincronizar com o banco de dados:', error);
+    process.exit(1); // Falha ao iniciar se o banco não conectar
   }
 }
 

@@ -1,49 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const Produto = require('../models/Produto');
-const produtosRoutes = require('./routes/produtosRoutes');
 
-// 2. Aplicar o roteador com o prefixo /api
-app.use('/api', produtosRoutes); 
+// --- ROTAS DE PRODUTOS (CRUD) ---
 
-
+// CREATE (Criar Produto)
 router.post('/produtos', async (req, res) => {
   try {
     const { nome, descricao, preco } = req.body;
+    if (!nome || preco === undefined) {
+      return res.status(400).json({ error: 'Nome e Preço são obrigatórios.' });
+    }
     const produto = await Produto.create({ nome, descricao, preco });
     return res.status(201).json(produto);
   } catch (error) {
-    console.error(error);
+    console.error('Erro ao criar o produto:', error);
     return res.status(500).json({ error: 'Erro ao criar o produto' });
   }
 });
 
+// READ (Listar Todos os Produtos)
 router.get('/produtos', async (req, res) => {
   try {
     const produtos = await Produto.findAll();
     return res.status(200).json(produtos);
   } catch (error) {
-    console.error(error);
+    console.error('Erro ao buscar os produtos:', error);
     return res.status(500).json({ error: 'Erro ao buscar os produtos' });
   }
 });
 
-router.get('/produtos/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const produto = await Produto.findByPk(id);
-
-    if (!produto) {
-      return res.status(404).json({ error: 'Produto não encontrado' });
-    }
-
-    return res.status(200).json(produto);
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'Erro ao buscar o produto' });
-  }
-});
-
+// UPDATE (Atualizar Produto)
 router.put('/produtos/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -57,11 +44,12 @@ router.put('/produtos/:id', async (req, res) => {
     await produto.update({ nome, descricao, preco });
     return res.status(200).json(produto);
   } catch (error) {
-    console.error(error);
+    console.error('Erro ao atualizar o produto:', error);
     return res.status(500).json({ error: 'Erro ao atualizar o produto' });
   }
 });
 
+// DELETE (Deletar Produto)
 router.delete('/produtos/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -72,9 +60,9 @@ router.delete('/produtos/:id', async (req, res) => {
     }
 
     await produto.destroy();
-    return res.status(204).send();
+    return res.status(204).send(); // 204 = No Content (Sucesso, sem corpo)
   } catch (error) {
-    console.error(error);
+    console.error('Erro ao deletar o produto:', error);
     return res.status(500).json({ error: 'Erro ao deletar o produto' });
   }
 });
