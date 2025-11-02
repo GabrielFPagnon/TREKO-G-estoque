@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Funcionario = require('../models/Funcionario'); 
-// NOTA: Para produção, use 'bcrypt' para hashear e comparar senhas.
-
+/*
+  Rota de login
+*/
 router.post('/login', async (req, res) => {
   const { codigo, nome, password } = req.body;
 
@@ -24,14 +25,13 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Credenciais inválidas.' });
     }
 
-    // Verificação de senha em texto plano (NÃO FAÇA ISSO EM PRODUÇÃO)
     const senhaCorreta = (password === funcionario.password);
 
     if (senhaCorreta) {
       console.log('Resultado: SUCESSO. Login autorizado.');
       return res.status(200).json({
         message: `Bem-vindo, ${funcionario.nome}!`,
-        token: 'fake-jwt-token-12345' // Em um app real, gere um JWT aqui
+        token: 'fake-jwt-token-12345' 
       });
     }
 

@@ -1,8 +1,10 @@
-require('dotenv').config(); // Para carregar variáveis de .env
+require('dotenv').config(); 
 const { Sequelize } = require('sequelize');
 
-// --- Configuração da Conexão ---
-// Usar variáveis de ambiente ou cair para os padrões que você mencionou
+/*
+  credenciais de acesso ao banco de dados
+*/
+ 
 const DB_NAME = process.env.DB_NAME || 'gestao_de_estoque';
 const DB_USER = process.env.DB_USER || 'postgres';
 const DB_PASS = process.env.DB_PASS || '7031';
@@ -15,7 +17,7 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   host: DB_HOST,
   port: DB_PORT,
   dialect: 'postgres',
-  logging: (msg) => console.log(`[SQL] ${msg}`), // Log de SQL mais claro
+  logging: (msg) => console.log(`[SQL] ${msg}`),
 });
 
 module.exports = sequelize;

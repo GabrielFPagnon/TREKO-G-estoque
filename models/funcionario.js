@@ -1,6 +1,9 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../src/banco'); // Corrigido o caminho para a pasta 'src'
+const sequelize = require('../src/banco'); 
 
+/* 
+  Dados a serem checados no banco sobre o funcionário.
+*/ 
 const Funcionario = sequelize.define('Funcionario', {
   id: {
     type: DataTypes.INTEGER,
@@ -22,7 +25,7 @@ const Funcionario = sequelize.define('Funcionario', {
   }
 }, {
   tableName: 'funcionarios', 
-  timestamps: false // Desabilitado (como no seu original)
+  timestamps: false 
 });
 
 module.exports = Funcionario;

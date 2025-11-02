@@ -1,6 +1,9 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../src/banco'); // Corrigido o caminho para a pasta 'src'
+const sequelize = require('../src/banco');
 
+/* 
+  Dados a serem inseridas no banco sobre o produto. 
+*/
 const Produto = sequelize.define('Produto', {
   id: {
     type: DataTypes.INTEGER,
@@ -9,7 +12,7 @@ const Produto = sequelize.define('Produto', {
   },
   nome: {
     type: DataTypes.STRING,
-    allowNull: false, // Nome deve ser obrigatório
+    allowNull: false, 
   },
   descricao: {
     type: DataTypes.STRING,
@@ -17,12 +20,12 @@ const Produto = sequelize.define('Produto', {
   },
   preco: {
     type: DataTypes.FLOAT,
-    allowNull: false, // Preço deve ser obrigatório
+    allowNull: false, 
     defaultValue: 0.0,
   },
 }, {
   tableName: 'produtos',
-  timestamps: true, // Habilita createdAt e updatedAt
+  timestamps: true, 
 });
 
 module.exports = Produto;

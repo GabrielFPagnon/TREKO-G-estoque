@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const Produto = require('../models/Produto');
 
-// --- ROTAS DE PRODUTOS (CRUD) ---
-
-// CREATE (Criar Produto)
+/* 
+  Rotas para gerenciamento de produtos 
+*/
 router.post('/produtos', async (req, res) => {
   try {
     const { nome, descricao, preco } = req.body;
@@ -19,7 +19,6 @@ router.post('/produtos', async (req, res) => {
   }
 });
 
-// READ (Listar Todos os Produtos)
 router.get('/produtos', async (req, res) => {
   try {
     const produtos = await Produto.findAll();
@@ -30,7 +29,6 @@ router.get('/produtos', async (req, res) => {
   }
 });
 
-// UPDATE (Atualizar Produto)
 router.put('/produtos/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -49,7 +47,7 @@ router.put('/produtos/:id', async (req, res) => {
   }
 });
 
-// DELETE (Deletar Produto)
+
 router.delete('/produtos/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -60,7 +58,7 @@ router.delete('/produtos/:id', async (req, res) => {
     }
 
     await produto.destroy();
-    return res.status(204).send(); // 204 = No Content (Sucesso, sem corpo)
+    return res.status(204).send(); 
   } catch (error) {
     console.error('Erro ao deletar o produto:', error);
     return res.status(500).json({ error: 'Erro ao deletar o produto' });
