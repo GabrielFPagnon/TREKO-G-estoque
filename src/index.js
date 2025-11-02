@@ -15,7 +15,7 @@ app.use(express.json()); // Essencial para ler req.body
 
 // --- CONFIGURAÇÃO DE CORS (A MAIS IMPORTANTE) ---
 // Vamos permitir explicitamente as portas que o Vite usa.
-const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173').split(',');
+const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:9999').split(',');
 
 app.use(cors({
   origin: function (origin, callback) {
